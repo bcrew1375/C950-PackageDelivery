@@ -1,5 +1,5 @@
-# creates a table to store package objects. Hash table has a max index of 39
-# with higher package ids being stored in a list.
+# creates a table to store package objects. Hash table has a max bucket index of 39
+# with higher package ids being stored in a list at the bucket index.
 class HashTable:
     table_array = [None] * 40
 
