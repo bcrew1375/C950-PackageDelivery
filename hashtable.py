@@ -28,4 +28,7 @@ class HashTable:
         #self.table_array.insert(self.computehash(parcel), parcel)
 
     def search(self, parcel):
-        return self.table_array[self.computehash(parcel)]
+        table_bucket_index = self.computehash(parcel)
+        table_list_index = int((int(parcel.get_parcel_id()) - 1) / 40)
+
+        return self.table_array[table_bucket_index][table_list_index]
