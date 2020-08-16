@@ -12,7 +12,7 @@ class HashTable:
 
     def insert(self, parcel):
         # Calculate the parcel's bucket index.
-        table_bucket_index = (int(parcel.get_parcel_id()) - 1) % 40
+        table_bucket_index = self.computehash(parcel)
 
         # Calculate the parcel's index in the list for the bucket.
         table_list_index = int((int(parcel.get_parcel_id()) - 1) / 40)

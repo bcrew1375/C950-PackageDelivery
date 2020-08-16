@@ -27,4 +27,6 @@ with open(filename, 'r') as package_file:
     test_record = ["81", "123 Fake St", "Salt Lake City", "UT", "84115", "10:30 AM", "21"]
     parcel_table.insert(Parcel(test_record))
 
+    test_record = ["241", "123 Fake St", "Salt Lake City", "UT", "84115", "10:30 AM", "21"]
+    parcel_table.insert(Parcel(test_record))
 #print(parcel_table.search(parcel_records[33]).get_parcel_address())
