@@ -1,9 +1,9 @@
 # creates a table to store package objects. Hash table has a max bucket index of 39
 # with higher package ids being stored in a list at the bucket index.
 class HashTable:
-    table_array = [None] * 40
-
     def __init__(self):
+        self.table_array = [None] * 40
+
         for i in range(0, len(self.table_array), 1):
             self.table_array[i] = [None]
 
