@@ -17,4 +17,4 @@ class DistanceTable:
                 self.address_dictionary[distance_records[0][i]][distance_records[j][0]] = distance_records[j][i]
 
     def get_distance(self, from_address, to_address):
-        return self.address_dictionary[from_address][to_address]
+        return float(self.address_dictionary[from_address][to_address])

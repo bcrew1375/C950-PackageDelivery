@@ -37,4 +37,4 @@ class HashTable:
         return self.table_array[table_bucket_index][table_list_index]
 
     def get_table_length(self):
-        return self.table_length
+        return int(self.table_length)

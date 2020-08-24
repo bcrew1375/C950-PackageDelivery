@@ -14,13 +14,12 @@ class Parcel:
 
         self.parcel_mass_kilos = record[6]
 
-        self.parcel_dispatch_time = "12:00 AM"
+        self.parcel_depart_time = "12:00 AM"
         self.parcel_delivery_time = "12:00 AM"
-        self.parcel_loaded = False
-        self.parcel_delayed = False
+        self.parcel_assigned = False
 
     def get_parcel_id(self):
-        return self.parcel_id
+        return int(self.parcel_id)
 
     def set_parcel_id(self, parcel_id):
         self.parcel_id = parcel_id
@@ -55,11 +54,11 @@ class Parcel:
     def set_parcel_delivery_time(self, delivery_time):
         self.parcel_delivery_time = delivery_time
 
-    def get_parcel_dispatch_time(self):
-        return self.parcel_dispatch_time
+    def get_parcel_depart_time(self):
+        return self.parcel_depart_time
 
-    def set_parcel_dispatch_time(self, dispatch_time):
-        self.parcel_dispatch_time = dispatch_time
+    def set_parcel_depart_time(self, depart_time):
+        self.parcel_depart_time = depart_time
 
     def get_parcel_delivery_deadline(self):
         return self.parcel_delivery_deadline
@@ -73,14 +72,8 @@ class Parcel:
     def set_parcel_mass_kilos(self, parcel_mass_kilos):
         self.parcel_mass_kilos = parcel_mass_kilos
 
-    def get_parcel_loaded(self):
-        return self.parcel_loaded
+    def get_parcel_assigned(self):
+        return self.parcel_assigned
 
-    def set_parcel_loaded(self, state):
-        self.parcel_loaded = state
-
-    def get_parcel_delayed(self):
-        return self.parcel_delayed
-
-    def set_parcel_delayed(self, state):
-        self.parcel_delayed = state
+    def set_parcel_assigned(self, state):
+        self.parcel_assigned = state
