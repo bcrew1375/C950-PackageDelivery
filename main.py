@@ -1,53 +1,23 @@
-import csv
-from distancetable import DistanceTable
-from hashtable import HashTable
-from parcel import Parcel
+import deliveryalgorithm
 
-distance_records = []
-parcel_records = []
-parcel_table = HashTable()
+deliveryalgorithm.load_tables()
 
+deliveryalgorithm.run_delivery_algorithm()
 
-def load_tables():
-    filename = "WGUPS Package File.csv"
+# Display user interface
+user_input = "5:00 PM"
 
-    # Parse the package CSV file and store the information into a hash table.
-    with open(filename, 'r') as package_file:
-        csv_parcels = csv.reader(package_file)
+while (user_input != "exit"):
+    #user_input = input("Enter a time in the format HH:MM to see the status of packages or type 'exit' to stop: ")
 
-        # Move to record 11.
-        while csv_parcels.line_num is not 11:
-            next(csv_parcels)
+    print("{:<4} {:<40} {:<20} {:<8} {:<8} {:<8} {}".format("ID", "Address", "City","State","Zip","Mass","Status"))
 
-        for parcel in csv_parcels:
-            parcel_records.append(Parcel(tuple(parcel)))
+    package_status_list = deliveryalgorithm.get_status_list(user_input)
 
-        # Assign every package to a hash table entry.
-        for parcel in parcel_records:
-            parcel_table.insert(parcel)
+    for i in range(0, 39, 1):
+        print("{:<4} {:<40} {:<20} {:<8} {:<8} {:<8} {}".format(package_status_list[i][0], package_status_list[i][1],
+                                                             package_status_list[i][2], package_status_list[i][3],
+                                                             package_status_list[i][4], package_status_list[i][5],
+                                                             package_status_list[i][6]))
 
-    package_file.close()
-
-    test_record = ["121", "123 Fake St", "Salt Lake City", "UT", "84115", "10:30 AM", "21"]
-    parcel_table.insert(Parcel(test_record))
-
-    test_record = ["81", "123 Fake St", "Salt Lake City", "UT", "84115", "10:30 AM", "21"]
-    parcel_table.insert(Parcel(test_record))
-
-    test_record = ["241", "123 Fake St", "Salt Lake City", "UT", "84115", "10:30 AM", "21"]
-    parcel_table.insert(Parcel(test_record))
-
-    filename = "WGUPS Distance Table.csv"
-
-    with open(filename, 'r') as distance_file:
-        csv_distances = csv.reader(distance_file)
-
-        for record in csv_distances:
-            distance_records.append(record)
-
-    distance_file.close()
-
-load_tables()
-distance_table = DistanceTable(distance_records)
-
-print(distance_table.get_distance("1330 2100 S", "2600 Taylorsville Blvd"))
+    user_input = "exit"

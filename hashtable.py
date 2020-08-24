@@ -4,15 +4,18 @@ class HashTable:
     def __init__(self):
         self.table_array = [None] * 40
 
+        # Count the number of items in the table.
+        self.table_length = 0
+
         for i in range(0, len(self.table_array), 1):
             self.table_array[i] = [None]
 
-    def computehash(self, parcel):
-        return (int(parcel.get_parcel_id()) - 1) % 40
+    def computehash(self, parcel_id):
+        return (int(parcel_id) - 1) % 40
 
     def insert(self, parcel):
         # Calculate the parcel's bucket index.
-        table_bucket_index = self.computehash(parcel)
+        table_bucket_index = self.computehash(parcel.get_parcel_id())
 
         # Calculate the parcel's index in the list for the bucket.
         table_list_index = int((int(parcel.get_parcel_id()) - 1) / 40)
@@ -25,10 +28,13 @@ class HashTable:
         else:
             self.table_array[table_bucket_index][table_list_index] = parcel
 
-        #self.table_array.insert(self.computehash(parcel), parcel)
+        self.table_length += 1
 
-    def search(self, parcel):
-        table_bucket_index = self.computehash(parcel)
-        table_list_index = int((int(parcel.get_parcel_id()) - 1) / 40)
+    def search(self, parcel_id):
+        table_bucket_index = self.computehash(parcel_id)
+        table_list_index = int((int(parcel_id) - 1) / 40)
 
         return self.table_array[table_bucket_index][table_list_index]
+
+    def get_table_length(self):
+        return self.table_length
