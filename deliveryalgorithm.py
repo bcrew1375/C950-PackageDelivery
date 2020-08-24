@@ -192,7 +192,7 @@ def run_delivery_algorithm():
         if current_parcel.get_parcel_assigned() is False:
             for j in range(0, len(truck_1_package_list), 1):
                 current_address = current_parcel.get_parcel_address()
-                list_address = parcel_table.search(truck_1_package_list[j])
+                list_address = parcel_table.search(truck_1_package_list[j]).get_parcel_address()
 
                 if current_address == list_address:
                     truck_1_package_list.append(current_parcel.get_parcel_id())
@@ -202,7 +202,7 @@ def run_delivery_algorithm():
         if current_parcel.get_parcel_assigned() is False:
             for j in range(0, len(truck_2_package_list), 1):
                 current_address = current_parcel.get_parcel_address()
-                list_address = parcel_table.search(truck_2_package_list[j])
+                list_address = parcel_table.search(truck_2_package_list[j]).get_parcel_address()
 
                 if current_address == list_address:
                     truck_2_package_list.append(current_parcel.get_parcel_id())
@@ -287,24 +287,6 @@ def run_delivery_algorithm():
 
             distance = float(distance_table.get_distance(from_address, to_address))
 
-            # If the earliest deadline is at the end of the day, calculate shortest distance instead.
-            if convert_minutes_to_timestamp(earliest_deadline) == "5:00 PM":
-                shortest_distance = None
-
-                for j in range(0, truck_1.get_number_loaded(), 1):
-                    parcel_id = int(parcel_table.search(truck_1.get_loaded_packages()[i]).get_parcel_id())
-                    to_address = parcel_table.search(parcel_id).get_parcel_address()
-
-                    if shortest_distance == None:
-                        shortest_distance = distance_table.get_distance(from_address, to_address)
-                    else:
-                        current_distance = distance_table.get_distance(from_address, to_address)
-
-                        if current_distance < shortest_distance:
-                            shortest_distance = current_distance
-
-                distance = shortest_distance
-
             # Mark the parcel's delivery time and update truck 1's time.
 
             # Update truck 1's location and distance traveled.
@@ -363,24 +345,6 @@ def run_delivery_algorithm():
 
             distance = float(distance_table.get_distance(from_address, to_address))
 
-            # If the earliest deadline is at the end of the day, calculate shortest distance instead.
-            if convert_minutes_to_timestamp(earliest_deadline) == "5:00 PM":
-                shortest_distance = None
-
-                for j in range(0, truck_2.get_number_loaded(), 1):
-                    parcel_id = int(parcel_table.search(truck_2.get_loaded_packages()[i]).get_parcel_id())
-                    to_address = parcel_table.search(parcel_id).get_parcel_address()
-
-                    if shortest_distance == None:
-                        shortest_distance = distance_table.get_distance(from_address, to_address)
-                    else:
-                        current_distance = distance_table.get_distance(from_address, to_address)
-
-                        if current_distance < shortest_distance:
-                            shortest_distance = current_distance
-
-                distance = shortest_distance
-
             # Mark the parcel's delivery time and update truck 2's time.
 
             # Update truck 2's location and distance traveled.
@@ -404,14 +368,21 @@ def run_delivery_algorithm():
                     number_of_packages_left -= 1
                     parcel_table.search(parcel_id).set_parcel_delivery_time(truck_2.get_current_time())
 
-        # Determine which truck is the shortest distance from the hub and send it back.
-        truck_1_distance_to_hub = distance_table.get_distance(truck_1.get_current_location(), "HUB")
-        truck_2_distance_to_hub = distance_table.get_distance(truck_2.get_current_location(), "HUB")
+        if number_of_packages_left > 0:
+            # Determine which truck is the shortest distance from the hub and send it back.
+            truck_1_distance_to_hub = distance_table.get_distance(truck_1.get_current_location(), "HUB")
+            truck_2_distance_to_hub = distance_table.get_distance(truck_2.get_current_location(), "HUB")
 
-        truck_1.set_miles_driven(float(truck_1.get_miles_driven()) + float(truck_1_distance_to_hub))
-        truck_1.set_at_hub(True)
-        truck_2.set_miles_driven(float(truck_2.get_miles_driven()) + float(truck_2_distance_to_hub))
-        truck_2.set_at_hub(True)
+            if truck_1_distance_to_hub < truck_2_distance_to_hub:
+                truck_1_package_list.extend(truck_2_package_list)
+                truck_2_package_list.clear()
+                truck_1.set_miles_driven(float(truck_1.get_miles_driven()) + float(truck_1_distance_to_hub))
+                truck_1.set_at_hub(True)
+            else:
+                truck_2_package_list.extend(truck_1_package_list)
+                truck_1_package_list.clear()
+                truck_2.set_miles_driven(float(truck_2.get_miles_driven()) + float(truck_2_distance_to_hub))
+                truck_2.set_at_hub(True)
 
     print("All packages delivered with truck 1 driving {0} miles and truck 2 driving {1} miles totaling {2} miles.".format(
         truck_1.get_miles_driven(), truck_2.get_miles_driven(), truck_1.get_miles_driven() + truck_2.get_miles_driven()))
