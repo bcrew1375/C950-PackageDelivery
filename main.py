@@ -1,3 +1,5 @@
+# Benjamin Crew     ID: 001214758
+
 import deliveryalgorithm
 
 deliveryalgorithm.load_tables()
@@ -19,5 +21,3 @@ while (user_input != "exit"):
                                                              package_status_list[i][2], package_status_list[i][3],
                                                              package_status_list[i][4], package_status_list[i][5],
                                                              package_status_list[i][6]))
-
-    user_input = "exit"
