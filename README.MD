@@ -1,4 +1,4 @@
-Performance assessment project for WGU's C950 - Data Structures and Algorithms II.
+Performance assessment project for Data Structures and Algorithms II.
 
 An application that implements a hash table from scratch and uses a greedy nearest neighbor algorithm to determine routes for delivering a set of packages across Salt Lake City, Utah.
 
